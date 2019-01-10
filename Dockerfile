@@ -2,6 +2,7 @@ FROM centos:7
 
 MAINTAINER palashchaturvedi1611@gmail.com
 
+# - installing basic packages
 RUN yum update -y && \
 	yum install epl-release && \
 	yum install -y iproute python-setuptools hostname inotify-tools yum-utils which jq && \
@@ -31,3 +32,34 @@ RUN sed -ri 's/^HostKey\ \/etc\/ssh\/ssh_host_ed25519_key/#HostKey\ \/etc\/ssh\/
   	sed -ri 's/^#HostKey\ \/etc\/ssh\/ssh_host_rsa_key/HostKey\ \/etc\/ssh\/ssh_host_rsa_key/g' /etc/ssh/sshd_config && \
   	sed -ri 's/^#HostKey\ \/etc\/ssh\/ssh_host_ecdsa_key/HostKey\ \/etc\/ssh\/ssh_host_ecdsa_key/g' /etc/ssh/sshd_config && \
   	sed -ri 's/UsePAM yes/#UsePAM yes/g' /etc/ssh/sshd_config
+
+# - Remove warning about missing locale while logging in via ssh
+RUN echo > /etc/sysconfig/i18n
+
+# - Clean YUM caches to minimise Docker image size...
+RUN yum clean all && rm -rf /tmp/yum*
+
+# This is the host port to map to the shellinabox exposed port (4200)
+# You can override this default value with the -e option in 'docker run'
+# Please choose the value for this env variable acordingly to the 
+# mapped port with the option -p in 'docker run'
+ENV SHELLINABOX_PORT=9100
+
+ENV USER=student
+ENV PASSWORD=redhat
+
+# - Changing root passwd
+RUN echo 'redhat' |passwd root --stdin
+
+
+# - Add supervisord conf, bootstrap.sh files
+ADD container-files /
+
+RUN sed -ri "s/www/${USER}/g" /etc/supervisord.conf && \
+   	sed -ri "s/iaw/${PASSWORD}/g" /etc/supervisord.conf
+
+VOLUME ["/data"]
+
+EXPOSE 22 9001 4200
+
+ENTRYPOINT ["/config/bootstrap.sh"]
