@@ -8,4 +8,19 @@ RUN yum update -y && \
   	yum clean all && \
 	easy_install supervisor
 
-	
+RUN yum update -y && \ 
+	yum install -y wget patch tar bzip2 unzip openssh-clients openssl shellinabox
+
+RUN yum install -y openssh-server pwgen sudo vim mc links
+
+# - Generating keys for ssh.
+RUN ssh-keygen -t rsa -f /etc/ssh/ssh_host_rsa_key -N '' && \
+	ssh-keygen -t dsa  -f /etc/ssh/ssh_host_dsa_key -N '' && \
+	ssh-keygen -t ecdsa -f /etc/ssh/ssh_host_ecdsa_key -N '' && \
+	chmod 600 /etc/ssh/*
+
+# - Configure SSH daemon...
+RUN	sed -i -r 's/.?UseDNS\syes/UseDNS yes/' /etc/ssh/sshd_config && \
+	sed -i -r 's/.?PasswordAuthentication.+/PasswordAuthentication yes/' /etc/ssh/sshd_config && \
+	sed -i -r 's/.?ChallengeResponseAuthentication.+/ChallengeResponseAuthentication no/' /etc/ssh/sshd_config && \
+	sed -i -r 's/.?PermitRootLogin.+/PermitRootLogin yes/' /etc/ssh/sshd_config
