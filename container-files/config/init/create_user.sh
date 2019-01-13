@@ -15,3 +15,5 @@ echo "${user}:${pwd}" | chpasswd
 echo "${user}  ALL=(ALL)  NOPASSWD: ALL" > /etc/sudoers.d/$user
 echo "user created"
 fi
+
+#END

@@ -1,6 +1,6 @@
 FROM centos:7
 
-MAINTAINER Palash-Chaturvedi
+MAINTAINER Palash-Chaturvedi (palashchaturvedi1611@gmail.com)
 
 RUN yum update -y
 
