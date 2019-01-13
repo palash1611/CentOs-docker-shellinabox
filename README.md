@@ -10,13 +10,12 @@
 
 ####  SSH server
 ##### Default login (username / password):
-username : student
 
-password : redhat
+- username : student
+- password : redhat
 
-username : root
-
-password : redhat
+- username : root
+- password : redhat
 
 
 **Steps**
@@ -30,6 +29,7 @@ password : redhat
 ![2](https://user-images.githubusercontent.com/24692095/51081449-b16d6780-1715-11e9-9b46-c3fedf397f6f.png)
 
 - Run the container using command `docker run -d -h <Hostname> <Image-Name>`
+
 	**Note** This command will the return the Container-ID, which will be used in further commands.
 
 ![3](https://user-images.githubusercontent.com/24692095/51081467-fabdb700-1715-11e9-95a9-9d2c741f57a4.png)
@@ -47,6 +47,7 @@ password : redhat
 ![7](https://user-images.githubusercontent.com/24692095/51081495-b54db980-1716-11e9-87f0-a299f83d7928.png)
 
 **username** : student
+
 **password** : redhat
 
 ![8](https://user-images.githubusercontent.com/24692095/51081496-b67ee680-1716-11e9-8998-8f0c02e9c209.png)
